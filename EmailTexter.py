@@ -7,7 +7,8 @@ from email.message import EmailMessage
 class EmailTexter:
 
     SUPPORTED_CARRIERS = {
-        'VERIZON' : 'vtext.com'
+        'VERIZON' : 'vtext.com',
+        'TMOBILE' : 'tmomail.net'
     }
 
     # gets the smtp server object to send emails
@@ -26,7 +27,7 @@ class EmailTexter:
             # TODO - ADD ERROR HANDLING/PRINTING
             return None
         return server
-
+ 
     # creates email address from phone number
     # phoneNumber : 10 digit string phone number e.g. 5551234567
     # carrier     : carrier name from SUPPORTED_CARRIERS keys

@@ -6,7 +6,7 @@ import json, sys
 import unittest
 
 sys.path.append("..")
-from EmailTexter import EmailTexter
+from emailtexter import EmailTexter
 
 class IntegrationTestCases(unittest.TestCase):
 
