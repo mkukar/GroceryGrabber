@@ -1,0 +1,40 @@
+{
+    "email_credentials" : {
+        "user" : "",
+        "pass" : "",
+        "url" : "smtp.gmail.com"
+    },
+    "phone_credentials" : {
+        "number" : "",
+        "carrier" : "VERIZON"
+    },
+    "carts" : [
+        {
+            "website" : "PRIMENOW_WHOLE_FOODS",
+            "user" : "",
+            "pass" : "",
+            "enabled" : true
+        },
+        {
+            "website" : "PRIMENOW_AMAZON",
+            "user" : "",
+            "pass" : "",
+            "enabled" : true
+        },
+        {
+            "website" : "PRIMENOW_KEG_N_BOTTLE",
+            "user" : "",
+            "pass" : "",
+            "enabled" : true
+        },
+        {
+            "website" : "PRIMENOW_BRISTOL_FARMS",
+            "user" : "",
+            "pass" : "",
+            "enabled" : true
+        }
+    ],
+    "check_cart_interval_secs" : 60,
+    "check_config_interval_mins" : 10,
+    "use_automatic_login" : false
+}
