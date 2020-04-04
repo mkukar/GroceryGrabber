@@ -31,13 +31,39 @@ class WebNavigator:
         }
     }
 
-    # creates a website driver to use to load websites
+    # creates a website browser object based on firefox
+    # geckodriver_exe : name of geckodriver executable that must be in path
+    # return          : firefox website browser object
     def getBrowser(self, geckodriver_exe=r"geckodriver_0_26_0_win64.exe"):
         opts = Options()
-        #opts.headless = True
+        #opts.headless = True # removed so we can do manual login and modifications
         return Firefox(executable_path=geckodriver_exe, options=opts)
 
+    # allows the user to manually log in within a certain timeout
+    # site_id  : name of site in SITE_INFO_DICT
+    # browser  : browser object
+    # timeout  : (optional) time to wait for user to log in
+    # return   : true on success, false on failure
+    def manualLogin(self, site_id, browser, timeout=60):
+        if site_id not in self.SITE_INFO_DICT.keys():
+            return False
+        loginTitle = browser.title
 
+        browser.get(self.SITE_INFO_DICT[site_id]['login_link'])
+        time.sleep(timeout)
+
+        if browser.title == loginTitle: # did not change pages
+            return False
+        else:
+            return True
+
+    # automatically logs into a given site
+    # site_id                : name of site in SITE_INFO_DICT
+    # browser                : browser object
+    # username               : account username
+    # password               : account password
+    # time_to_manually_retry : (optional) if given, lets the user retry for X amount of seconds
+    # return                 : true on success, false on failure
     def login(self, site_id, browser, username, password, time_to_manually_retry=0):
         if site_id not in self.SITE_INFO_DICT.keys():
             return False
@@ -65,8 +91,10 @@ class WebNavigator:
         else:
             return True
 
-
-    # return tuple of True/False if delivery time found, and then the string of the time(s)
+    # determines if delivery time is available
+    # site_id : name of site
+    # browser : web browser object
+    # return  : tuple of (True/False if deliver time found, string of time(s)/error message)
     def checkIfDeliveryTimeAvailable(self, site_id, browser):
         if site_id not in self.SITE_INFO_DICT.keys():
             return (False, "ERROR - unsupported site")
