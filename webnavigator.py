@@ -28,6 +28,24 @@ class WebNavigator:
             'cart_link' : 'https://primenow.amazon.com/checkout/enter-checkout?merchantId=A292AGRFD023A8',
             'delivery_options_id' : 'delivery-slot-form',
             'no_delivery_text' : 'No delivery windows available.'
+        },
+        'PRIMENOW_KEG_N_BOTTLE' : {
+            'login_link' : 'https://primenow.amazon.com/signin?returnUrl=https://primenow.amazon.com/home',
+            'user_id' : 'ap_email',
+            'pass_id' : 'ap_password',
+            'submit_id' : 'signInSubmit',
+            'cart_link' : 'https://primenow.amazon.com/checkout/enter-checkout?merchantId=A2LMB8A37PW4SX',
+            'delivery_options_id' : 'delivery-slot-form',
+            'no_delivery_text' : 'No delivery windows available.'
+        },
+        'PRIMENOW_BRISTOL_FARMS' : {
+            'login_link' : 'https://primenow.amazon.com/signin?returnUrl=https://primenow.amazon.com/home',
+            'user_id' : 'ap_email',
+            'pass_id' : 'ap_password',
+            'submit_id' : 'signInSubmit',
+            'cart_link' : 'https://primenow.amazon.com/checkout/enter-checkout?merchantId=A2V56U6DPP6YTA',
+            'delivery_options_id' : 'delivery-slot-form',
+            'no_delivery_text' : 'No delivery windows available.'
         }
     }
 
