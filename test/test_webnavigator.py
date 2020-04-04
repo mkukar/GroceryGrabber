@@ -15,8 +15,8 @@ class IntegrationTestCases(unittest.TestCase):
         with open(self.CONFIG_FILE) as f:
             data = json.load(f)
         try:
-            self.PRIMENOW_USER = data['cart_information']['user']
-            self.PRIMENOW_PASS = data['cart_information']['pass']
+            self.PRIMENOW_USER = data['carts'][0]['user']
+            self.PRIMENOW_PASS = data['carts'][0]['pass']
         except Exception as e:
             print(e)
         
