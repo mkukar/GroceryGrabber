@@ -1,4 +1,8 @@
 
+# tests for webnavigator class
+# NOTE - Integration tests require valid credentials, internet connection, etc.
+# Copyright Michael Kukar 2020
+
 import json, sys
 import unittest
 

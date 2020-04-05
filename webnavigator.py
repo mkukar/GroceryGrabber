@@ -1,6 +1,5 @@
 # navigates web pages for the grocerygrabber
-# CB: Michael Kukar 2020
-# Copyright Michael Kukar 2020. All Rights Reserved.
+# Copyright Michael Kukar 2020. 
 
 import sys, os, time
 import subprocess

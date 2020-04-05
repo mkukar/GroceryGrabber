@@ -1,6 +1,6 @@
 # unit tests for emailtexter
-# CB: Michael Kukar 2020
-# Copyright Michael Kukar 2020. All Rights Reserved.
+# NOTE - Integration tests require valid credentials, internet connection, etc.
+# Copyright Michael Kukar 2020.
 
 import json, sys
 import unittest

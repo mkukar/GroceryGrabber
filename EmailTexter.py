@@ -1,5 +1,5 @@
 # sends "texts" through an email
-# CB: Michael Kukar 2020
+# Copyright Michael Kukar 2020.
 
 import smtplib
 from email.message import EmailMessage
