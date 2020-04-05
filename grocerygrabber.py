@@ -4,8 +4,8 @@
 
 VERSION = 1.0
 
-import datetime
-import argparse, threading, os, json
+import datetime, argparse, threading
+import os, sys, json
 
 from emailtexter import EmailTexter
 from webnavigator import WebNavigator
