@@ -1,13 +1,11 @@
 # GroceryGrabber
- Notifies you when a grocery delivery slot is open
+ Notifies you when a grocery delivery slot is open on Amazon Prime Now
 
 ## Dependencies
-TO DO
-- python 3+
+- Python 3+
 - Selenium
 - Firefox
-- geckodriver https://github.com/mozilla/geckodriver/releases
-    - if using windows 64 bit, can just use the file in the lib folder
+- geckodriver 
 
 ## Installation
 
@@ -18,7 +16,7 @@ NOTE - Only tested with 64-bit windows
 2. Install Selenium if you have not already
 - pip install selenium
 3. Download geckodriver and add it to your path
-- If using Windows 64-bit, a copy is in the "lib" folder
+- https://github.com/mozilla/geckodriver/releases
 - Open an admin terminal and enter "SETX /m PATH=%PATH%;PATH_TO_GECKODRIVER"
 4. Set up your config file
 - Create a copy of "config_template.json" and rename it to "config.json"
@@ -39,6 +37,7 @@ NOTE - Only tested with 64-bit windows
 python grocerygrabber.py [-c, --config config.json] [-v, --verbose] [-h, --help]
 
 -c/--config  : json configuration file. Defaults to config.json
+
 -v/--verbose : prints detailed runtime information to the console
 
 ## Author
