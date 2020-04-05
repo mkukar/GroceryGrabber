@@ -1,11 +1,10 @@
 # Notifies when there is an available grocery delivery slot
 # in popular delivery apps (amazon prime now, etc.)
-# CB: Michael Kukar 2020
-# Copyright Michael Kukar 2020. All Rights Reserved.
-# TODO - ADD LICENSE INFORMATION HERE
+# Copyright Michael Kukar 2020
 
-VERSION = 0.1
+VERSION = 1.0
 
+import datetime
 import argparse, threading, os, json
 
 from emailtexter import EmailTexter
@@ -13,7 +12,9 @@ from webnavigator import WebNavigator
 
 class GroceryGrabber:
 
-    # variables
+    #
+    # VARIABLES
+    #
     configFile = None
     verbose = False
 
@@ -31,10 +32,9 @@ class GroceryGrabber:
     enabledCarts = []
     credentials = {}
 
-    
-
-
-    # constructor/destructor
+    #
+    # CONSTRUCTOR/DESTRUCTOR
+    #
     def __init__(self, configFile, verbose=False):
         self.configFile = configFile
         self.verbose=verbose
@@ -45,13 +45,18 @@ class GroceryGrabber:
         if self.webBrowser is not None:
             self.webBrowser.close()
 
-    # functions
+    #
+    # FUNCTIONS
+    #
 
+    # sets up all the objects
     def setup(self):
         if self.verbose: print("Setting up...")
-        self.readConfig(self.configFile)
+        if not self.readConfig(self.configFile):
+            return False
         self.webBrowser = self.webNavigator.getBrowser()
-        self.authenticateAccounts(self.enabledCarts, self.webBrowser, manual=self.manualLogin)
+        if not self.authenticateAccounts(self.enabledCarts, self.webBrowser, manual=self.manualLogin):
+            return False
         self.emailServer = self.emailTexter.initializeEmailServer(
             self.credentials['email']['user'],
             self.credentials['email']['pass'], 
@@ -62,14 +67,17 @@ class GroceryGrabber:
             self.credentials['phone']['carrier']
             )
         if self.verbose: print("Setup complete.")
+        return True
 
-
+    # reads in the config file and saves the data into memory
     def readConfig(self, configFile):
         if self.verbose: print("Reading configuration file...")
         # checks if file exists and is a json file
         if configFile is None or ".json" not in configFile:
+            if self.verbose: print("ERROR: Config file invalid.")
             return False
         if not os.path.exists(configFile):
+            if self.verbose: print("ERROR: Config file not found.")
             return False
         
         with open(configFile) as f:
@@ -100,7 +108,7 @@ class GroceryGrabber:
         if self.verbose: print("Success.")
         return True
 
-
+    # logs into each account in the account list, or gives the manual option (set period of time)
     def authenticateAccounts(self, accountList, browser, manual=True):
         result = True            
         if self.verbose: print("Authenticating accounts. Please be patient...")
@@ -109,9 +117,14 @@ class GroceryGrabber:
                 result = result and self.webNavigator.manualLogin(account['website'], browser)
             else:
                 result = result and self.webNavigator.login(account['website'], browser, account['user'], account['pass'])
-        if self.verbose: print("Done.")
+        if result is False and self.verbose:
+            print("Failed to authenticate.")
+        elif self.verbose:
+            print("Done.")
         return result
 
+    # checks if delivery is available, periodically reloads the config, and automatically re-launches itself
+    # NOTE - This function will run forever until interrupted
     def run(self):
         # first reads config if tick count reached
         if self.currentReadConfigTick <= 0:
@@ -124,7 +137,7 @@ class GroceryGrabber:
             self.currentReadConfigTick -= 1
 
         # now checks each cart that is enabled
-        if self.verbose: print("Checking availability...")
+        if self.verbose: print("Checking availability " + str(datetime.datetime.now()))
         for cart in self.enabledCarts:
             availabilityResult = self.webNavigator.checkIfDeliveryTimeAvailable(cart['website'], self.webBrowser)
             # if found availability, sends a text
@@ -138,20 +151,19 @@ class GroceryGrabber:
 
         if self.verbose: print("Done.")
         # repeats itself forever
+        # NOTE - This causes difficulty in interrupting the process since it will only die once the timer has run out (e.g. if 60 seconds, would have to wait 60 seconds to die)
         threading.Timer(self.tickSeconds, self.run).start()
-        #t.daemon = True
-        #t.start()
         
 
 if __name__ == "__main__":
     # read command line input
     parser = argparse.ArgumentParser(
         description='Notifies when delivery windows are available for grocery delivery services',
-        epilog='Copyright Michael Kukar 2020. All Rights Reserved.'
+        epilog='Copyright Michael Kukar 2020.'
         )
 
     parser.add_argument("-c", "--config", dest="config", default="config.json", help="json configuration file")
-    parser.add_argument("-v", "--verbose", dest="verbose", action='store_true', help="prints detailed runtim info to console")
+    parser.add_argument("-v", "--verbose", dest="verbose", action='store_true', help="prints detailed runtime info to console")
 
     args = parser.parse_args()
 
@@ -165,15 +177,12 @@ if __name__ == "__main__":
 
 
     # sets up everything (logging into accounts, etc.)
-    gb.setup()
+    if not gb.setup():
+        if not verbose:
+            print("Error setting up. Run with --verbose to see details.")
+        else:
+            print("Error setting up.")
+        sys.exit(1)
 
     # runs until cancelled. Config can be updated in meantime
     gb.run()
-
-
-    # TODO - planned features
-    # 1. Have a way to enable and disable carts using the console
-    # 2. Have a way to determine if order was placed, so can auto-disable
-    # 3. Have a setup script since the configuration is difficult
-    # 4. Have an automatic config generator if none is given/found
-    # 5. Support more than just amazon prime now
