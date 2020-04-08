@@ -139,7 +139,13 @@ class GroceryGrabber:
         # now checks each cart that is enabled
         if self.verbose: print("Checking availability " + str(datetime.datetime.now()))
         for cart in self.enabledCarts:
-            availabilityResult = self.webNavigator.checkIfDeliveryTimeAvailable(cart['website'], self.webBrowser)
+            availabilityResult = self.webNavigator.checkIfDeliveryTimeAvailable(
+                cart['website'], 
+                self.webBrowser, 
+                tryLoginOnFailure=True, 
+                username=cart['user'], 
+                password=cart['pass']
+            )
             # if found availability, sends a text
             if availabilityResult[0] == True:
                 if self.verbose: print("Found availability for " + cart['website'] + "! Sending message...")
