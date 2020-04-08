@@ -113,7 +113,7 @@ class WebNavigator:
     # browser           : web browser object
     # tryLoginOnFailure : (optional) if true will try auto-login if an error occurs (logged out of cart)
     # return            : tuple of (True/False if deliver time found, string of time(s)/error message)
-    def checkIfDeliveryTimeAvailable(self, site_id, browser, tryLoginOnFailure=True, username=None, password=None):
+    def checkIfDeliveryTimeAvailable(self, site_id, browser, tryLoginOnFailure=False, username=None, password=None):
         if site_id not in self.SITE_INFO_DICT.keys():
             return (False, "ERROR - unsupported site")
         
