@@ -109,10 +109,11 @@ class WebNavigator:
             return True
 
     # determines if delivery time is available
-    # site_id : name of site
-    # browser : web browser object
-    # return  : tuple of (True/False if deliver time found, string of time(s)/error message)
-    def checkIfDeliveryTimeAvailable(self, site_id, browser):
+    # site_id           : name of site
+    # browser           : web browser object
+    # tryLoginOnFailure : (optional) if true will try auto-login if an error occurs (logged out of cart)
+    # return            : tuple of (True/False if deliver time found, string of time(s)/error message)
+    def checkIfDeliveryTimeAvailable(self, site_id, browser, tryLoginOnFailure=True, username=None, password=None):
         if site_id not in self.SITE_INFO_DICT.keys():
             return (False, "ERROR - unsupported site")
         
@@ -124,6 +125,10 @@ class WebNavigator:
                 self.SITE_INFO_DICT[site_id]['delivery_options_id']
             )
         except Exception as e:
+            if tryLoginOnFailure:
+                self.login(site_id, browser, username, password)
+                # note - only will try auto-login once, then will just fail second time
+                return self.checkIfDeliveryTimeAvailable(site_id, browser, tryLoginOnFailure=False, username=username, password=password)
             return (False, "ERROR - Could not find delivery option")
 
         if self.SITE_INFO_DICT[site_id]['no_delivery_text'] in delivery_slots.text:
