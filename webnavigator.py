@@ -87,15 +87,17 @@ class WebNavigator:
         # loads the login website
         browser.get(self.SITE_INFO_DICT[site_id]['login_link'])
         loginTitle = browser.title
-
-        # enters credentials into the login fields
-        time.sleep(3) # these delays are to make amazon think we are human
-        browser.find_element_by_id(self.SITE_INFO_DICT[site_id]['user_id']).send_keys(username)
-        time.sleep(3)
-        browser.find_element_by_id (self.SITE_INFO_DICT[site_id]['pass_id']).send_keys(password)
-        time.sleep(3)
-        # clicks the enter button
-        browser.find_element_by_id(self.SITE_INFO_DICT[site_id]['submit_id']).click()
+        try:
+            # enters credentials into the login fields
+            time.sleep(3) # these delays are to make amazon think we are human
+            browser.find_element_by_id(self.SITE_INFO_DICT[site_id]['user_id']).send_keys(username)
+            time.sleep(3)
+            browser.find_element_by_id (self.SITE_INFO_DICT[site_id]['pass_id']).send_keys(password)
+            time.sleep(3)
+            # clicks the enter button
+            browser.find_element_by_id(self.SITE_INFO_DICT[site_id]['submit_id']).click()
+        except:
+            return False
 
         # if title stays the same as sign-in, then error occured (didn't redirect to main page)
         if browser.title == loginTitle:
