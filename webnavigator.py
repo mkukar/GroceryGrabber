@@ -92,7 +92,7 @@ class WebNavigator:
             time.sleep(3) # these delays are to make amazon think we are human
             browser.find_element_by_id(self.SITE_INFO_DICT[site_id]['user_id']).send_keys(username)
             time.sleep(3)
-            browser.find_element_by_id (self.SITE_INFO_DICT[site_id]['pass_id']).send_keys(password)
+            browser.find_element_by_id(self.SITE_INFO_DICT[site_id]['pass_id']).send_keys(password)
             time.sleep(3)
             # clicks the enter button
             browser.find_element_by_id(self.SITE_INFO_DICT[site_id]['submit_id']).click()
@@ -128,7 +128,9 @@ class WebNavigator:
             )
         except Exception as e:
             if tryLoginOnFailure:
-                self.login(site_id, browser, username, password)
+                # tries loging in max of two times
+                if not self.login(site_id, browser, username, password):
+                    self.login(site_id, browser, username, password)
                 # note - only will try auto-login once, then will just fail second time
                 return self.checkIfDeliveryTimeAvailable(site_id, browser, tryLoginOnFailure=False, username=username, password=password)
             return (False, "ERROR - Could not find delivery option")
