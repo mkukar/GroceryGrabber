@@ -34,15 +34,17 @@ class IntegrationTestCases(unittest.TestCase):
         # all amazon accounts are the same, so only check one
         self.assertTrue(self.wn.login("PRIMENOW_AMAZON", self.browser, self.PRIMENOW_USER, self.PRIMENOW_PASS))
 
+    def test_loginsucceedsForTwoValidLoginsInARow(self):
+        self.assertTrue(self.wn.login("PRIMENOW_AMAZON", self.browser, self.PRIMENOW_USER, self.PRIMENOW_PASS))
+        self.assertTrue(self.wn.login("PRIMENOW_AMAZON", self.browser, self.PRIMENOW_USER, self.PRIMENOW_PASS))
+
     def test_checkIfDeliveryTimeAvailable(self):
         # all amazon use same acct, only need one login
         self.wn.login("PRIMENOW_AMAZON", self.browser, self.PRIMENOW_USER, self.PRIMENOW_PASS)
         # since we dont know if there is a slot or not, just makes sure there was no error reported
         result = self.wn.checkIfDeliveryTimeAvailable("PRIMENOW_AMAZON", self.browser)
-        print(result[1])
         self.assertFalse("ERROR" in result[1])
         result = self.wn.checkIfDeliveryTimeAvailable("PRIMENOW_WHOLE_FOODS", self.browser)
-        print(result[1])
         self.assertFalse("ERROR" in result[1])
 
 if __name__ == "__main__":

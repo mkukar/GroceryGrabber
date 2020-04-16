@@ -17,7 +17,6 @@ class WebNavigator:
             'cart_link' : 'https://primenow.amazon.com/checkout/enter-checkout?merchantId=AQCUSYIS91P2B',
             'delivery_options_id' : 'delivery-slot-form',
             'no_delivery_text' : 'No delivery windows available.'
-
         },
         'PRIMENOW_WHOLE_FOODS' : {
             'login_link' : 'https://primenow.amazon.com/signin?returnUrl=https://primenow.amazon.com/home',
@@ -97,15 +96,21 @@ class WebNavigator:
             # clicks the enter button
             browser.find_element_by_id(self.SITE_INFO_DICT[site_id]['submit_id']).click()
         except:
-            return False
+            if "sign-in" in loginTitle.lower():
+                return False
+            else:
+                # already logged in, just redirected to home page
+                return True
 
         # if title stays the same as sign-in, then error occured (didn't redirect to main page)
-        if browser.title == loginTitle:
+        if browser.title == loginTitle and "sign-in" in loginTitle.lower():
             if time_to_manually_retry != 0:
                 # gives you a chance to type in the password yourself
                 time.sleep(time_to_manually_retry)
                 if browser.title != loginTitle:
                     return True
+            print(browser.title)
+            print(loginTitle)
             return False
         else:
             return True
