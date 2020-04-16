@@ -2,7 +2,7 @@
 # in popular delivery apps (amazon prime now, etc.)
 # Copyright Michael Kukar 2020
 
-VERSION = 1.0
+VERSION = 1.1
 
 import datetime, argparse, threading
 import os, sys, json
@@ -105,6 +105,12 @@ class GroceryGrabber:
                 print(str(e))
             return False
 
+        # newly added to config, if we fail we just treat as "false" for backwards compatibility
+        try:
+            self.sendTextOnError = self.configData['send_text_on_error']
+        except:
+            self.sendTextOnError = False
+
         if self.verbose: print("Success.")
         return True
 
@@ -152,6 +158,10 @@ class GroceryGrabber:
                 self.emailTexter.sendMessage(self.emailAddr, "Availibility for " + cart['website'] + '!\n' + availabilityResult[1], self.emailServer)
                 # now disable send availability for this one until config is read again
                 self.enabledCarts.remove(cart)
+            # if error, then we send a text if that is enabled
+            elif "ERROR" in availabilityResult[1] and self.sendTextOnError:
+                if self.verbose: print("Error reading cart. Please check your cart is full and that you are logged in.")
+                self.emailTexter.sendMessage(self.emailAddr, "Error reading cart. Please check your cart is full and that you are logged in.", self.emailServer)
             else:
                 if self.verbose: print(str(availabilityResult[1]))
 

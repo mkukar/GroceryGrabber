@@ -81,7 +81,7 @@ class WebNavigator:
     # password               : account password
     # time_to_manually_retry : (optional) if given, lets the user retry for X amount of seconds
     # return                 : true on success, false on failure
-    def login(self, site_id, browser, username, password, time_to_manually_retry=0):
+    def login(self, site_id, browser, username, password, time_to_manually_retry=30):
         if site_id not in self.SITE_INFO_DICT.keys():
             return False
         # loads the login website

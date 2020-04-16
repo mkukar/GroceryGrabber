@@ -36,5 +36,6 @@
     ],
     "check_cart_interval_secs" : 60,
     "check_config_interval_mins" : 10,
-    "use_automatic_login" : false
+    "use_automatic_login" : true,
+    "send_text_on_error" : true
 }
