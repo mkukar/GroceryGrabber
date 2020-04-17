@@ -155,6 +155,12 @@ class GroceryGrabber:
             # if found availability, sends a text
             if availabilityResult[0] == True:
                 if self.verbose: print("Found availability for " + cart['website'] + "! Sending message...")
+                # reconnects email server to prevent any timeouts
+                self.emailServer = self.emailTexter.initializeEmailServer(
+                    self.credentials['email']['user'],
+                    self.credentials['email']['pass'], 
+                    self.credentials['email']['url']
+                    )
                 self.emailTexter.sendMessage(self.emailAddr, "Availibility for " + cart['website'] + '!\n' + availabilityResult[1], self.emailServer)
                 # now disable send availability for this one until config is read again
                 self.enabledCarts.remove(cart)
