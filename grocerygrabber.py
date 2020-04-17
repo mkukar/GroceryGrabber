@@ -161,7 +161,7 @@ class GroceryGrabber:
                     self.credentials['email']['pass'], 
                     self.credentials['email']['url']
                     )
-                self.emailTexter.sendMessage(self.emailAddr, "Availibility for " + cart['website'] + '!\n' + availabilityResult[1], self.emailServer)
+                self.emailTexter.sendMessage(self.emailAddr, "availability for " + cart['website'] + '!\n' + availabilityResult[1], self.emailServer)
                 # now disable send availability for this one until config is read again
                 self.enabledCarts.remove(cart)
             # if error, then we send a text if that is enabled
